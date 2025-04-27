@@ -6,6 +6,8 @@ Update the summary
 Function to prepare to output the result
 """
 from operation_function import Operations
+import sys
+import socket
 
 # implement the Operation
 op = Operations()
@@ -25,3 +27,18 @@ summary = {
     # Errors
     "number_errors": 0
 }
+
+# main method
+def main():
+    port = int(sys.argv[1])
+
+    # create legal ports
+    assert 50000 <= port <= 59999
+
+    # Use IPV4 address, TCP protocol
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.bind(('', port))
+    sock.listen()
+
+    # start the background statistics thread of the server
+    print("The server has been started and is listening on port!")
