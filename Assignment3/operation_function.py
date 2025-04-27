@@ -24,3 +24,11 @@ class Operations:
         """
         with self.lock:
             return self.tuple_space.pop(k, None)
+    
+    def put(self, k, v):
+        """
+        if k exists return 1
+        else add the tuple
+        """
+        with self.lock:
+            return 0
