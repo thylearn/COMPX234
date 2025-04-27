@@ -16,3 +16,11 @@ class Operations:
         """
         with self.lock:
             return self.tuple_space.get(k, None)
+        
+    def get(self, k):
+        """
+        if k exists return v and delete (k, v)
+        else return none
+        """
+        with self.lock:
+            return self.tuple_space.pop(k, None)
