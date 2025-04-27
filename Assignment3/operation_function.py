@@ -31,4 +31,9 @@ class Operations:
         else add the tuple
         """
         with self.lock:
-            return 0
+            if (k, v) in self.tuple_space:
+                return 1 # fail
+            
+            # Add (k, v) to the dictionary
+            self.tuple_space[k] = v
+            return 0 # success
