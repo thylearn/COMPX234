@@ -7,9 +7,12 @@ Function to prepare to output the result
 from operation_function import Operations
 import sys
 import socket
+import threading
 
 # implement the Operation
 op = Operations()
+# create lock
+summary_lock = threading.Lock()
 
 # create and initialize the summary of the current tuple space
 summary = {
@@ -18,7 +21,7 @@ summary = {
     # the total number of operations
     "number_operations": 0,
     # total READs
-    "total_read": 0,
+    "total_reads": 0,
     # total GETs
     "total_gets": 0,
     # total PUTs
@@ -51,7 +54,25 @@ def connect_client(connection, address):
                 operation = data[0] # R P G
                 content = data[2:].strip() # key and value
 
+                # initialize the response
+                response = ""
                 
+                # update the summary
+                with summary_lock:
+                    summary["number_operations"] += 1
+
+                # if the operation is READ
+                if operation == "R":
+                    value = op.read(content)
+                    with summary_lock:
+                        summary["total_reads"] += 1
+
+                    if value is not None:
+                        response = f"OK ({content}, {value}) read"
+                    else:
+                        summary["number_errors"] += 1
+                        response = f"ERR {content} does not exist"
+
             except Exception as e:
                 break
             pass
