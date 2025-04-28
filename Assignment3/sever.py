@@ -116,7 +116,15 @@ def server_output():
         time.sleep(10)
 
         while summary_lock:
-            pass
+            num = len(op.tuple_space)
+            total_key = sum(len(k) for k in op.tuple_space)
+            total_value = sum(len(v) for v in op.tuple_space())
+
+            # average key size and value size
+            if num != 0:
+                average_key = total_key / num
+                average_value = total_value / num
+            average_tuple = average_key + average_value
 
 # main method
 def main():
