@@ -159,3 +159,6 @@ def main():
     while True:
         connection, address = sock.accept()
         threading.Thread(target=connect_client, args=(connection, address)).start()
+
+if __name__ == '__main__':
+    main()
