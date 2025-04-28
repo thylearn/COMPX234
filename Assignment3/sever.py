@@ -126,6 +126,19 @@ def server_output():
                 average_value = total_value / num
             average_tuple = average_key + average_value
 
+            # print summary
+            print("\nA summary of the current tuple space")
+            print("The number of tuple in the tuple space: " + str(num))
+            print(f"The average tuple size: {average_tuple:.2f}")
+            print(f"The average key size: {average_key:.2f}")
+            print(f"The average value size: {average_value:.2f}")
+            print(f"The total number of clients which have connected: {summary["number_client"]}")
+            print(f"The total number of operations: {summary['number_operations']}")
+            print(f"Total READs: {summary['total_reads']}")
+            print(f"Total GETs: {summary['total_gets']}")
+            print(f"Total PUTs: {summary['total_puts']}")
+            print(f"Errors: {summary['number_errors']}")
+
 # main method
 def main():
     port = int(sys.argv[1])
