@@ -155,3 +155,7 @@ def main():
     print("The server has been started and is listening on port!")
 
     threading.Thread(target=server_output, daemon=True).start()
+
+    while True:
+        connection, address = sock.accept()
+        threading.Thread(target=connect_client, args=(connection, address)).start()
