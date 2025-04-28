@@ -6,7 +6,20 @@ import os
 # switch to the required form
 # e.x. PUT Livepool 19
 def switch_format(l:str):
-    pass
+    # get the list of three part
+    values = l.strip().split(" ", 2)
+    if not values:
+        return None
+    
+    operation = values[0]
+    if operation == "READ" or operation == "GET":
+        if len(values) != 2:
+            return None
+        k = values[1]
+        format_msg = f"{operation[0]} {k}"
+    
+    return f"{len(format_msg) + 3:03}" + format_msg
+
 
 def main():
     local_host = sys.argv[1]
