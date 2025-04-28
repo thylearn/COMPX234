@@ -86,7 +86,17 @@ def connect_client(connection, address):
                         else:
                             # success
                             response = f"OK ({k}, {v}) added"
-
+                
+                # if the operation is GET
+                elif operation == "G":
+                    value = op.get(content)
+                    with summary_lock:
+                        summary["total_gets"] += 1
+                        if value is not None:
+                            response = f"OK ({content}, {value}) removed"
+                        else:
+                            summary["number_errors"] += 1
+                            respomse = f"ERR {content} does not exist"
             except Exception as e:
                 break
             pass
