@@ -5,6 +5,7 @@ from operation_function import Operations
 import sys
 import socket
 import threading
+import time
 
 # implement the Operation
 op = Operations()
@@ -111,6 +112,9 @@ def connect_client(connection, address):
 # define the server output
 def server_output():
     while True:
+        # set 10 seconds
+        time.sleep(10)
+
         while summary_lock:
             pass
 
