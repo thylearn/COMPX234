@@ -153,3 +153,5 @@ def main():
 
     # start the background statistics thread of the server
     print("The server has been started and is listening on port!")
+
+    threading.Thread(target=server_output, daemon=True).start()
