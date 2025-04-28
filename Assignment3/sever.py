@@ -1,7 +1,4 @@
 """
-connect with cilent
-Get operations: READ, PUT, GET
-Update the summary 
 Function to prepare to output the result
 """
 from operation_function import Operations
@@ -110,6 +107,12 @@ def connect_client(connection, address):
     # add clients
     with summary_lock:
         summary["number_client"] += 1
+
+# define the server output
+def server_output():
+    while True:
+        while summary_lock:
+            pass
 
 # main method
 def main():
