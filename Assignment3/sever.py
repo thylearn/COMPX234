@@ -27,6 +27,17 @@ summary = {
     "number_errors": 0
 }
 
+# functions connect with the client thread
+# connect with client and load the client's address
+def connect_client(connection, address):
+    with connection:
+        while True:
+            try:
+                pass
+            except Exception as e:
+                break
+            pass
+
 # main method
 def main():
     port = int(sys.argv[1])
