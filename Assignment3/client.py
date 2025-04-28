@@ -3,6 +3,11 @@ import socket
 import sys
 import os
 
+# switch to the required form
+# e.x. PUT Livepool 19
+def switch_format(l:str):
+    pass
+
 def main():
     local_host = sys.argv[1]
     port = int(sys.argv[2])
