@@ -1,6 +1,3 @@
-"""
-Function to prepare to output the result
-"""
 from operation_function import Operations
 import sys
 import socket
