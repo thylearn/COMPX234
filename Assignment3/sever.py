@@ -72,6 +72,20 @@ def connect_client(connection, address):
                     else:
                         summary["number_errors"] += 1
                         response = f"ERR {content} does not exist"
+                
+                # if the operation is PUT
+                elif operation == "P":
+                    kv = content.split(" ", 1)
+                    k, v = kv
+                    add_result = op.put(k, v)
+                    with summary_lock:
+                        summary["total_puts"] += 1
+                        if add_result == 1: # fall
+                            summary["number_errors"] += 1
+                            response = f"ERR {k} already exists"
+                        else:
+                            # success
+                            response = f"OK ({k}, {v}) added"
 
             except Exception as e:
                 break
