@@ -96,7 +96,14 @@ def connect_client(connection, address):
                             response = f"OK ({content}, {value}) removed"
                         else:
                             summary["number_errors"] += 1
-                            respomse = f"ERR {content} does not exist"
+                            response = f"ERR {content} does not exist"
+
+                # except operation
+                else:
+                    with summary_lock:
+                        summary["number_errors"] += 1
+
+                connection.send(f"{len(response.encode()) + 3:03}".encode() + response.encode())
             except Exception as e:
                 break
             
