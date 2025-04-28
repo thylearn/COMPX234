@@ -18,6 +18,18 @@ def switch_format(l:str):
         k = values[1]
         format_msg = f"{operation[0]} {k}"
     
+    elif operation == "PUT":
+        if len(values) != 3:
+            return None
+        k, v = values[1], values[2]
+        if len(k) + len(v) > 969:
+            # can't access too long characters
+            return None
+        format_msg = f"{operation[0]} {k} {v}"
+    
+    else:
+        return None
+    
     return f"{len(format_msg) + 3:03}" + format_msg
 
 
