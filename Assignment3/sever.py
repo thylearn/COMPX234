@@ -40,6 +40,18 @@ def connect_client(connection, address):
 
                 # turn to int to check
                 size = int(size_con.decode())
+
+                # remain data to store, decode as string
+                data = connection.recv(size - 3).decode()
+                if not data:
+                    break # no content
+                
+                # store the operations
+                # READ PUT GET
+                operation = data[0] # R P G
+                content = data[2:].strip() # key and value
+
+                
             except Exception as e:
                 break
             pass
