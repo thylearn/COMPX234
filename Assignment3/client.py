@@ -32,7 +32,6 @@ def switch_format(l:str):
     
     return f"{len(format_msg) + 3:03}" + format_msg
 
-
 def main():
     local_host = sys.argv[1]
     port = int(sys.argv[2])
@@ -52,6 +51,16 @@ def main():
                 line = lines.strip()
                 if not line:
                     continue
+
+                request = switch_format(line)
+                if not request:
+                    # invalid request
+                    continue
+
+                soc.send(request.encode())
+                size = int(soc.recv(3).decode())
+                response = soc.recv(size - 3).decode()
+                print(f"{line}: {response}")
 
 if __name__ == '__main__':
     main()
