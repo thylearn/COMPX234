@@ -99,7 +99,10 @@ def connect_client(connection, address):
                             respomse = f"ERR {content} does not exist"
             except Exception as e:
                 break
-            pass
+            
+    # add clients
+    with summary_lock:
+        summary["number_client"] += 1
 
 # main method
 def main():
