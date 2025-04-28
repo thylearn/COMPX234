@@ -33,7 +33,13 @@ def connect_client(connection, address):
     with connection:
         while True:
             try:
-                pass
+                # access three word
+                size_con = connection.recv(3)
+                if not size_con:
+                    break
+
+                # turn to int to check
+                size = int(size_con.decode())
             except Exception as e:
                 break
             pass
