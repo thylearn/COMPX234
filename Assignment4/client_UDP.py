@@ -57,7 +57,7 @@ def download_file(filename, control_address, control_socket):
     download_message = f"DOWNLOAD {filename}"
     response = send_receive(control_socket,download_message, control_address)
     if response is None:
-        print("File {filename} not found or no response.")
+        print("ERR {filename} NOT_FOUND.")
         return
     
     # Extract file size and port
@@ -95,6 +95,16 @@ def download_file(filename, control_address, control_socket):
                     print(f"\nDecode/write error: {e}")
             else:
                 print(f"\nBlock {start}-{end} failed.")
+
+    # Send CLOSE and handle response
+    close_message = f"FILE {filename} CLOSE"
+    ack = send_receive(data_socket, close_message, (control_address[0], port))
+    if ack and ack.strip() == f"FILE {filename} CLOSE_OK":
+        print(f"\nDownload complete: {filename}")
+    else:
+        print(f"\nNo CLOSE_OK for {filename}")
+    data_socket.close()
+
 
 # Main function of the program
 def main():
