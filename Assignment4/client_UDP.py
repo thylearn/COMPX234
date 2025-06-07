@@ -74,6 +74,8 @@ def download_file(filename, control_address, control_socket):
             # Calculate the data range of the current request
             start = received
             end = min(received + 999, file_size - 1)
+            file_request = f"FILE {filename} GET START {start} END {end}"
+            data_response = send_receive(data_socket, file_request, (control_address[0], port))
 
 # Main function of the program
 def main():
