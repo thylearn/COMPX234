@@ -51,6 +51,15 @@ def send_receive(sock, message, server_address):
     print("No response received.")
     return None
 
+def download_file(filename, control_address, control_socket):
+    # Request message
+    download_message = f"DOWNLOAD {filename}"
+    response = send_receive(control_socket,download_message, control_address)
+    if response is None:
+        print("File {filename} not found or no response.")
+        return
+
+
 # Main function of the program
 def main():
     host, port, file_path = parse_arguments()
