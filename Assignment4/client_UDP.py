@@ -1,5 +1,6 @@
 import sys
 import socket
+import base64
 
 # Parse user input
 def parse_arguments():
@@ -75,7 +76,25 @@ def download_file(filename, control_address, control_socket):
             start = received
             end = min(received + 999, file_size - 1)
             file_request = f"FILE {filename} GET START {start} END {end}"
+
+            # Receive response and write file
             data_response = send_receive(data_socket, file_request, (control_address[0], port))
+            if data_response and data_response.startswith("FILE"):
+                try:
+                    # Extract the data part encoded in Base64
+                    encoded = data_response.split("DATA", 1)[-1].strip()
+                    # Decode
+                    raw = base64.b64decode(encoded)
+
+                    # Locate and write the data block
+                    f.seek(start)
+                    f.write(raw)
+                    received += len(raw)
+                    print("*", end="", flush=True)
+                except Exception as e:
+                    print(f"\nDecode/write error: {e}")
+            else:
+                print(f"\nBlock {start}-{end} failed.")
 
 # Main function of the program
 def main():
