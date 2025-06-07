@@ -24,7 +24,13 @@ def read_file(file_path):
 
 # Create UDP socket
 def control_socket(host, port):
-    control_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    control_sockets = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     control_address = (host, port)
     print("Control socket created")
-    return control_socket, control_address
+    return control_sockets, control_address
+
+# Main function of the program
+def main():
+    host, port, file_path = parse_arguments()
+    file = read_file(file_path)
+    control_sockets, control_address = control_socket(host, port)
