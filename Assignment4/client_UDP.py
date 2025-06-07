@@ -64,6 +64,16 @@ def download_file(filename, control_address, control_socket):
     file_size = int(parts[4])
     port = int(parts[6])
     print(f"OK {filename}: SIZE {file_size}, PORT {port}")
+    
+    # Create data socket and file writing
+    data_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    # Byte count counter
+    received = 0
+    with open(filename, "wb") as f:
+        while received < file_size:
+            # Calculate the data range of the current request
+            start = received
+            end = min(received + 999, file_size - 1)
 
 # Main function of the program
 def main():
