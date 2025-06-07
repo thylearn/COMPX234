@@ -58,7 +58,12 @@ def download_file(filename, control_address, control_socket):
     if response is None:
         print("File {filename} not found or no response.")
         return
-
+    
+    # Extract file size and port
+    parts = response.strip().split()
+    file_size = int(parts[4])
+    port = int(parts[6])
+    print(f"OK {filename}: SIZE {file_size}, PORT {port}")
 
 # Main function of the program
 def main():
