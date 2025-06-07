@@ -109,5 +109,13 @@ def download_file(filename, control_address, control_socket):
 # Main function of the program
 def main():
     host, port, file_path = parse_arguments()
-    file = read_file(file_path)
+    files = read_file(file_path)
     control_sockets, control_address = control_socket(host, port)
+
+    for filename in files:
+        download_file(filename, control_address, control_sockets)
+
+    control_socket.close()
+
+if __name__ == "__main__":
+    main()
