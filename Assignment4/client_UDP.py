@@ -29,6 +29,28 @@ def control_socket(host, port):
     print("Control socket created")
     return control_sockets, control_address
 
+# Reliable send and receive
+def send_receive(sock, message, server_address):
+    max_retry = 5
+    time_out = 1.0
+    # Retry loop
+    for i in range(max_retry):
+        try:
+            # Set a timeout and send a message
+            sock.settimeout(time_out)
+            sock.sendto(message.encode(), server_address)
+
+            # Receiving response
+            data, _ = sock.recvfrom(65536)
+            return data.decode()
+        except socket.timeout:
+            # Timeout handling and retry
+            print("Timeout.")
+            time_out *= 2
+
+    print("No response received.")
+    return None
+
 # Main function of the program
 def main():
     host, port, file_path = parse_arguments()
