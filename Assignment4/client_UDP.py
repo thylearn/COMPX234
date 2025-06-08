@@ -64,7 +64,7 @@ def download_file(filename, control_address, control_socket):
     parts = response.strip().split()
     file_size = int(parts[4])
     port = int(parts[6])
-    print(f"OK {filename}: SIZE {file_size}, PORT {port}")
+    print(f"OK {filename} SIZE {file_size} PORT {port}")
     
     # Create data socket and file writing
     data_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
