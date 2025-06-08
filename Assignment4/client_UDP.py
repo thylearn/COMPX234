@@ -57,7 +57,7 @@ def download_file(filename, control_address, control_socket):
     download_message = f"DOWNLOAD {filename}"
     response = send_receive(control_socket,download_message, control_address)
     if response is None:
-        print("ERR {filename} NOT_FOUND.")
+        print(f"ERR {filename} NOT_FOUND.")
         return
     
     # Extract file size and port
@@ -90,6 +90,9 @@ def download_file(filename, control_address, control_socket):
                     f.seek(start)
                     f.write(raw)
                     received += len(raw)
+
+                    # Success Analysis
+                    print(f"FILE {filename} OK START {start} END {end} DATA ...")
                     print("*", end="", flush=True)
                 except Exception as e:
                     print(f"\nDecode/write error: {e}")
@@ -115,7 +118,7 @@ def main():
     for filename in files:
         download_file(filename, control_address, control_sockets)
 
-    control_socket.close()
+    control_sockets.close()
 
 if __name__ == "__main__":
     main()
