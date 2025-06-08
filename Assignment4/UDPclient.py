@@ -62,6 +62,10 @@ def download_file(filename, control_address, control_socket):
     
     # Extract file size and port
     parts = response.strip().split()
+    if len(parts) < 7 or parts[0] != "OK":
+        print(f"Invalid response format: '{response}'")
+        return
+
     file_size = int(parts[4])
     port = int(parts[6])
     print(f"OK {filename} SIZE {file_size} PORT {port}")

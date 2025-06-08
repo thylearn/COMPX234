@@ -122,8 +122,8 @@ def handle_file_request(message, f, client_address, data_socket, filename):
 # Main entrance
 def main():
     port = parse_port()
-    server_socket = server_socket(port)
-    listen_requests(server_socket)
+    server_sockets = server_socket(port)
+    listen_requests(server_sockets)
 
 if __name__ == "__main__":
     main()
