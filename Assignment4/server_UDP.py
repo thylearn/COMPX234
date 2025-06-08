@@ -1,5 +1,6 @@
 import sys
 import socket
+import base64
 
 # Parse the port number
 def parse_port():
@@ -28,3 +29,9 @@ def handle_file_request(message, f, client_address, data_socket, filename):
         return
     start = int(parts[4])
     end = int(parts[6])
+
+    # Read the data block
+    f.seek(start)
+    data = f.read(end - start + 1)
+    encoded = base64.b64encode(data).decode()
+
