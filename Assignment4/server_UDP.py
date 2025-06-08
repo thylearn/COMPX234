@@ -9,6 +9,7 @@ import threading
 def parse_port():
     if len(sys.argv) != 2:
         # error
+        print("Parse port error!")
         sys.exit(1)
     return int(sys.argv[1])
 
@@ -16,7 +17,18 @@ def parse_port():
 def server_socket(port):
     server_sockets = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server_sockets.bind(('', port))
-    return server_socket
+    return server_sockets
+
+# Listen and handle the client requests
+def listen_requests(server_socket):
+    while True:
+        try:
+            request, client_address = server_socket.recvfrom(4096)
+            msg = request.decode().strip()
+            print(f"Received from {client_address}: {msg}")
+            handle_download_request(msg, client_address, server_socket)
+        except Exception as e:
+            print(f"{e}")
 
 # Send an error or start a thread
 def handle_download_request(message, client_address, server_socket):
@@ -54,7 +66,7 @@ def start_thread(filename, client_address, server_socket):
 def handle_file_transfer(filename, client_ip, port):
     data_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     data_socket.bind(('', port))
-    print(f"Send datagram packet to port {port}")
+    print(f"Send datagram packet to port {port} for {filename}")
 
     # Open the file and process the request
     try:
@@ -73,7 +85,7 @@ def handle_file_transfer(filename, client_ip, port):
                 # Handle GET requests
                 handle_file_request(message, f, client_address, data_socket, filename)
     except Exception as e:
-        print(f"{e}")
+        print(f"Error {filename}: {e}")
     
     finally:
         data_socket.close()
@@ -90,10 +102,16 @@ def handle_file_request(message, f, client_address, data_socket, filename):
         start = int(parts[4])
         end = int(parts[6])
 
+        if start > end or start < 0 or end < 0:
+            print(f"Invalid range: {start}-{end}")
+            return
+
         # Read the data block
         f.seek(start)
         data = f.read(end - start + 1)
         encoded = base64.b64encode(data).decode()
+
+        print(f"FILE {filename} OK START {start} END {end} DATA {message}")
 
         # Send the response
         response = f"FILE {filename} OK START {start} END {end} DATA {encoded}"
