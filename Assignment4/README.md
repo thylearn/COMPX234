@@ -11,10 +11,10 @@ This project has implemented a file transfer system based on the UDP protocol. T
 
 ## Start the Server
 ```
-python3 UDPserver.py <port>
+python UDPserver.py <port>
 ```
 
 ## Start the Client
 ```
-python3 UDPclient.py <server_ip> <port> <file_list_path>
+python UDPclient.py <server_ip> <port> <file_list_path>
 ```
