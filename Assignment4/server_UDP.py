@@ -14,3 +14,8 @@ def server_socket(port):
     server_sockets.bind(('', port))
     return server_socket
 
+# The function of the file transfer thread
+def handle_file_transfer(filename, client_address, port):
+    data_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    data_socket.bind(('', port))
+    print(f"Send datagram packet to port {port}")
