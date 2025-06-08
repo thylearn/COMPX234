@@ -1,6 +1,9 @@
 import sys
 import socket
 import base64
+import os
+import random
+import threading
 
 # Parse the port number
 def parse_port():
@@ -14,6 +17,21 @@ def server_socket(port):
     server_sockets = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server_sockets.bind(('', port))
     return server_socket
+
+# Start the thread and send the OK response
+def start_thread(filename, client_address, server_socket):
+    file_size = os.path.getsize(filename)
+    port = random.randint(50000, 51000)
+
+    # Confirmation message
+    OK_message = f"OK {filename} SIZE {file_size} PORT {port}"
+
+    # Send the confirmation message
+    server_socket.sendto(OK_message.encode(), client_address)
+    print(f"{OK_message}")
+
+    thread = threading.Thread(target=handle_file_transfer, args=(filename, client_address[0], port))
+    thread.start()
 
 # The function of the file transfer thread
 def handle_file_transfer(filename, client_ip, port):
