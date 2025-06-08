@@ -16,21 +16,33 @@ def server_socket(port):
     return server_socket
 
 # The function of the file transfer thread
-def handle_file_transfer(filename, client_address, port):
+def handle_file_transfer(filename, client_ip, port):
     data_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     data_socket.bind(('', port))
     print(f"Send datagram packet to port {port}")
 
     # Open the file and process the request
-    with open(filename, "rb") as f:
-        while True:
-            request, client_address = data_socket.recvfrom(65536)
-            message = request.decode().strip()
-            print(f"{message}")
-            if "CLOSE" in message:
-                break
-            handle_file_request(message, f, client_address, data_socket, filename)
+    try:
+        with open(filename, "rb") as f:
+            while True:
+                request, client_address = data_socket.recvfrom(65536)
+                message = request.decode().strip()
+                print(f"{message}")
+                if "CLOSE" in message:
+                    # Handle the CLOSE request
+                    close_acknowledge = f"FILE {filename} CLOSE_OK"
+                    data_socket.sendto(close_acknowledge.encode(), client_address)
+                    print(f"{close_acknowledge}")
+                    break
 
+                # Handle GET requests
+                handle_file_request(message, f, client_address, data_socket, filename)
+    except Exception as e:
+        print(f"{e}")
+    
+    finally:
+        data_socket.close()
+        print(f"Closed socket on port {port}")
 
 # Handle the FILE GET request
 def handle_file_request(message, f, client_address, data_socket, filename):
