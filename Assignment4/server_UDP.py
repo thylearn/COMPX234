@@ -18,6 +18,23 @@ def server_socket(port):
     server_sockets.bind(('', port))
     return server_socket
 
+# Send an error or start a thread
+def handle_download_request(message, client_address, server_socket):
+    # request message
+    parts = message.split()
+    if len(parts) != 2 or parts[0] != "DOWNLOAD":
+        print("Invalid request.")
+        return
+
+    # The requested file name
+    filename = parts[1]
+    if not os.path.exists(filename):
+        error_message = f"ERR {filename} NOT_FOUND"
+        server_socket.sendto(error_message.encode(), client_address)
+        print(f"{error_message}")
+    else:
+        start_thread(filename, client_address, server_socket)
+
 # Start the thread and send the OK response
 def start_thread(filename, client_address, server_socket):
     file_size = os.path.getsize(filename)
