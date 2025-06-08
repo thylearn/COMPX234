@@ -21,6 +21,17 @@ def handle_file_transfer(filename, client_address, port):
     data_socket.bind(('', port))
     print(f"Send datagram packet to port {port}")
 
+    # Open the file and process the request
+    with open(filename, "rb") as f:
+        while True:
+            request, client_address = data_socket.recvfrom(65536)
+            message = request.decode().strip()
+            print(f"{message}")
+            if "CLOSE" in message:
+                break
+            handle_file_request(message, f, client_address, data_socket, filename)
+
+
 # Handle the FILE GET request
 def handle_file_request(message, f, client_address, data_socket, filename):
     parts = message.split()
