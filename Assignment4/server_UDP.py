@@ -27,13 +27,18 @@ def handle_file_request(message, f, client_address, data_socket, filename):
     if len(parts) != 8 or parts[0] != "FILE" or parts[2] != "GET":
         print("Invalid FILE GET message.")
         return
-    start = int(parts[4])
-    end = int(parts[6])
+    
+    try:
+        start = int(parts[4])
+        end = int(parts[6])
 
-    # Read the data block
-    f.seek(start)
-    data = f.read(end - start + 1)
-    encoded = base64.b64encode(data).decode()
+        # Read the data block
+        f.seek(start)
+        data = f.read(end - start + 1)
+        encoded = base64.b64encode(data).decode()
 
-    response = f"FILE {filename} OK START {start} END {end} DATA {encoded}"
-    data_socket.sendto(response.encode(), client_address)
+        # Send the response
+        response = f"FILE {filename} OK START {start} END {end} DATA {encoded}"
+        data_socket.sendto(response.encode(), client_address)
+    except Exception as e:
+        print(f"Error: {e}")
