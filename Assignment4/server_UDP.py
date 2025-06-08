@@ -35,3 +35,5 @@ def handle_file_request(message, f, client_address, data_socket, filename):
     data = f.read(end - start + 1)
     encoded = base64.b64encode(data).decode()
 
+    response = f"FILE {filename} OK START {start} END {end} DATA {encoded}"
+    data_socket.sendto(response.encode(), client_address)

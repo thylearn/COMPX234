@@ -92,7 +92,7 @@ def download_file(filename, control_address, control_socket):
                     received += len(raw)
 
                     # Success Analysis
-                    print(f"FILE {filename} OK START {start} END {end} DATA ...")
+                    print(f"FILE {filename} OK START {start} END {end} DATA {encoded}")
                     print("*", end="", flush=True)
                 except Exception as e:
                     print(f"\nDecode/write error: {e}")
