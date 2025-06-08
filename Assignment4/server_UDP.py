@@ -19,3 +19,12 @@ def handle_file_transfer(filename, client_address, port):
     data_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     data_socket.bind(('', port))
     print(f"Send datagram packet to port {port}")
+
+# Handle the FILE GET request
+def handle_file_request(message, f, client_address, data_socket, filename):
+    parts = message.split()
+    if len(parts) != 8 or parts[0] != "FILE" or parts[2] != "GET":
+        print("Invalid FILE GET message.")
+        return
+    start = int(parts[4])
+    end = int(parts[6])
