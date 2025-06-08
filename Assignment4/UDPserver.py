@@ -118,3 +118,12 @@ def handle_file_request(message, f, client_address, data_socket, filename):
         data_socket.sendto(response.encode(), client_address)
     except Exception as e:
         print(f"Error: {e}")
+
+# Main entrance
+def main():
+    port = parse_port()
+    server_socket = server_socket(port)
+    listen_requests(server_socket)
+
+if __name__ == "__main__":
+    main()
